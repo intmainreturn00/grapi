@@ -5,7 +5,7 @@ import com.intmainreturn00.grapi.grapi
 import kotlinx.android.synthetic.main.login_main.*
 import kotlinx.coroutines.*
 import org.jetbrains.anko.browse
-import org.jetbrains.anko.toast
+
 
 class LoginActivity : ScopedAppActivity() {
 
@@ -17,24 +17,40 @@ class LoginActivity : ScopedAppActivity() {
         login.setOnClickListener {
             if (!grapi.isLoggedIn()) {
                 launch {
-                    try {
-                        grapi.loginStart()
-                        browse(grapi.getAuthorizationUrl())
-                    } catch (e: Exception) {
-                        println(e)
-                    }
+                    grapi.loginStart()
+                    browse(grapi.getAuthorizationUrl())
                 }
             }
         }
 
         launch {
-            try {
-                grapi.loginEnd(intent) {ok ->
-                    toast("auth $ok")
+            grapi.loginEnd(intent) {ok ->
+                if (ok) {
+                    // here we can start using api!
+                    tryUseApi()
                 }
-            } catch (e: Exception) {
-                println(e)
             }
         }
+
     }
+
+    fun tryUseApi() {
+        launch {
+            val userId = grapi.getUserId()
+            val shelves = grapi.getUserShelves(1, userId.id)
+            //val ownedBooks = grapi.getUserOwnedBooks(1, userId.id)
+            val booksFromShelf = grapi.getBooksFromShelf(userId.id, "read", 1, 2)
+
+            println(userId)
+            println(shelves)
+            //println(ownedBooks)
+            println(booksFromShelf)
+        }
+    }
+
+
+
+
+
+
 }
