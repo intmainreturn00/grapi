@@ -1,6 +1,7 @@
 package com.intmainreturn00.grexample
 
 import android.os.Bundle
+import com.intmainreturn00.grapi.Sort
 import com.intmainreturn00.grapi.grapi
 import kotlinx.android.synthetic.main.login_main.*
 import kotlinx.coroutines.*
@@ -24,7 +25,7 @@ class LoginActivity : ScopedAppActivity() {
         }
 
         launch {
-            grapi.loginEnd(intent) {ok ->
+            grapi.loginEnd(intent) { ok ->
                 if (ok) {
                     // here we can start using api!
                     tryUseApi()
@@ -39,7 +40,12 @@ class LoginActivity : ScopedAppActivity() {
             val userId = grapi.getUserId()
             val shelves = grapi.getUserShelves(1, userId.id)
             //val ownedBooks = grapi.getUserOwnedBooks(1, userId.id)
-            val booksFromShelf = grapi.getBooksFromShelf(userId.id, "read", 1, 2)
+            val booksFromShelf = grapi.getBooksFromShelf(
+                userId.id,
+                "read",
+                1, 2,
+                sort = Sort.NUM_PAGES
+            )
 
             println(userId)
             println(shelves)
@@ -47,10 +53,6 @@ class LoginActivity : ScopedAppActivity() {
             println(booksFromShelf)
         }
     }
-
-
-
-
 
 
 }

@@ -115,7 +115,8 @@ object grapi {
         shelf: String = "",
         page: Int = 1,
         perPage: Int = 200,
-        search: String = ""
+        search: String = "",
+        sort: Sort = Sort.EMPTY
     ): ReviewList =
         withContext(Dispatchers.IO) {
             val params =
@@ -126,8 +127,10 @@ object grapi {
                     "page" to page.toString(),
                     "per_page" to perPage.toString(),
                     "search" to search,
-                    "key" to oauth.apiKey
+                    "key" to oauth.apiKey,
+                    "sort" to (if (sort == Sort.EMPTY) "" else sort.toString().toLowerCase())
                 )
+
             val xml = oauth.executeSignedRequest(
                 "https://www.goodreads.com/review/list/${userId}.xml",
                 accessToken, params
