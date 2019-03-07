@@ -73,6 +73,169 @@ private fun readShelf(parser: XmlPullParser): Shelf {
 }
 
 
+fun parseSearchResults(xml: String): SearchResults {
+    val parser = Xml.newPullParser()
+    parser.setInput(StringReader(xml))
+
+    var searchResults: SearchResults? = null
+
+    while (parser.next() != XmlPullParser.END_DOCUMENT) {
+        if (parser.eventType != XmlPullParser.START_TAG) {
+            continue
+        }
+        when (parser.name) {
+            "search" -> searchResults = readSearchResults(parser)
+        }
+    }
+
+    return searchResults!!
+}
+
+
+private fun readSearchResults(parser: XmlPullParser): SearchResults {
+    var start = 0
+    var end = 0
+    var total = 0
+    var results = listOf<SearchResult>()
+
+    while (parser.next() != XmlPullParser.END_TAG) {
+        if (parser.eventType != XmlPullParser.START_TAG) {
+            continue
+        }
+        when (parser.name) {
+            "results-start" -> start = parseText(parser).toInt()
+            "results-end" -> end = parseText(parser).toInt()
+            "total-results" -> total = parseText(parser).toInt()
+            "results" -> results = readSearchResultsInner(parser)
+            else -> skip(parser)
+        }
+    }
+
+    return SearchResults(start, end, total, results)
+}
+
+
+private fun readSearchResultsInner(parser: XmlPullParser): List<SearchResult> {
+    val results = mutableListOf<SearchResult>()
+
+    while (parser.next() != XmlPullParser.END_TAG) {
+        if (parser.eventType != XmlPullParser.START_TAG) {
+            continue
+        }
+        when (parser.name) {
+            "work" -> results.add(readSearchResult(parser))
+            else -> skip(parser)
+        }
+    }
+    return results
+}
+
+
+private data class BestBookAuthor(val id: String, val name: String)
+private data class BestBook(
+    val id: String,
+    val title: String,
+    val imageUrl: String,
+    val imageUrlSmall: String,
+    val author: BestBookAuthor
+)
+
+private fun readSearchResult(parser: XmlPullParser): SearchResult {
+    var workId = ""
+    var bookId = ""
+    var bookTitle = ""
+    var authorId = ""
+    var authorName = ""
+    var imageUrl = ""
+    var imageUrlSmall = ""
+    var averageRating: Float? = null
+    var ratingsCount: Int? = null
+    var textReviewsCount: Int? = null
+
+    var bestBook: BestBook? = null
+
+    while (parser.next() != XmlPullParser.END_TAG) {
+        if (parser.eventType != XmlPullParser.START_TAG) {
+            continue
+        }
+        when (parser.name) {
+            "id" -> workId = parseText(parser)
+            "ratings_count" -> ratingsCount = parseInt(parser)
+            "average_rating" -> averageRating = parseFloat(parser)
+            "text_reviews_count" -> textReviewsCount = parseInt(parser)
+            "best_book" -> bestBook = readBestBook(parser)
+            else -> skip(parser)
+        }
+    }
+
+    if (bestBook != null) {
+        bookId = bestBook.id
+        imageUrl = bestBook.imageUrl
+        imageUrlSmall = bestBook.imageUrlSmall
+        bookTitle = bestBook.title
+        authorId = bestBook.author.id
+        authorName = bestBook.author.name
+    }
+
+    return SearchResult(
+        workId,
+        bookId,
+        bookTitle,
+        authorId,
+        authorName,
+        imageUrl,
+        imageUrlSmall,
+        averageRating,
+        ratingsCount,
+        textReviewsCount
+    )
+}
+
+
+private fun readBestBook(parser: XmlPullParser): BestBook {
+    var id = ""
+    var title = ""
+    var imageUrl = ""
+    var imageUrlSmall = ""
+    var author: BestBookAuthor? = null
+
+    while (parser.next() != XmlPullParser.END_TAG) {
+        if (parser.eventType != XmlPullParser.START_TAG) {
+            continue
+        }
+        when (parser.name) {
+            "id" -> id = parseText(parser)
+            "title" -> title = parseText(parser)
+            "image_url" -> imageUrl = parseText(parser)
+            "small_image_url" -> imageUrlSmall = parseText(parser)
+            "author" -> author = readBestBookAuthor(parser)
+            else -> skip(parser)
+        }
+    }
+
+    return BestBook(id, title, imageUrl, imageUrlSmall, author!!)
+}
+
+
+private fun readBestBookAuthor(parser: XmlPullParser): BestBookAuthor {
+    var id = ""
+    var name = ""
+
+    while (parser.next() != XmlPullParser.END_TAG) {
+        if (parser.eventType != XmlPullParser.START_TAG) {
+            continue
+        }
+        when (parser.name) {
+            "id" -> id = parseText(parser)
+            "name" -> name = parseText(parser)
+            else -> skip(parser)
+        }
+    }
+
+    return BestBookAuthor(id, name)
+}
+
+
 fun parseBook(xml: String): Book {
     val parser = Xml.newPullParser()
     parser.setInput(StringReader(xml))

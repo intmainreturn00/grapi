@@ -120,7 +120,6 @@ object grapi {
                     "sort" to (if (sort == Sort.EMPTY) "" else sort.toString().toLowerCase()),
                     "order" to (if (order == Order.DESCENDING) "d" else "a")
                 )
-
             val xml = oauth.executeSignedRequest(
                 "https://www.goodreads.com/review/list/${userId}.xml",
                 accessToken, params
@@ -131,7 +130,6 @@ object grapi {
 
     suspend fun getBookByISBN(isbn: String): Book = withContext(Dispatchers.IO) {
         val params = mapOf("key" to oauth.apiKey)
-
         val xml = oauth.executeSignedRequest(
             "https://www.goodreads.com/book/isbn/${isbn}?format=xml",
             accessToken, params
@@ -142,7 +140,6 @@ object grapi {
 
     suspend fun getBookByGRID(id: String): Book = withContext(Dispatchers.IO) {
         val params = mapOf("key" to oauth.apiKey)
-
         val xml = oauth.executeSignedRequest(
             "https://www.goodreads.com/book/show/${id}?format=xml",
             accessToken, params
@@ -150,5 +147,14 @@ object grapi {
         parseBook(xml)
     }
 
+
+    suspend fun getSearchResults(query: String, page: Int = 1) = withContext(Dispatchers.IO) {
+        val params = mapOf("key" to oauth.apiKey, "page" to page.toString(), "q" to query)
+        val xml = oauth.executeSignedRequest(
+            "https://www.goodreads.com/search/index.xml",
+            accessToken, params
+        ).body
+        parseSearchResults(xml)
+    }
 
 }

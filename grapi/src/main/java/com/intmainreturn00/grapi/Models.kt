@@ -63,6 +63,26 @@ data class Author(
     val textReviewsCount: Int?
 )
 
+data class SearchResults(
+    val start: Int,
+    val end: Int,
+    val total: Int,
+    val results: List<SearchResult>
+)
+
+data class SearchResult(
+    val workId: String,
+    val bookId: String,
+    val bookTitle: String,
+    val authorId: String,
+    val authorName: String,
+    val imageUrl: String,
+    val imageUrlSmall: String,
+    val averageRating: Float?,
+    val ratingsCount: Int?,
+    val textReviewsCount: Int?
+)
+
 
 enum class Sort {
     EMPTY,
@@ -74,8 +94,8 @@ enum class Sort {
     OWNED, DATE_PURCHASED, PURCHASE_LOCATION, CONDITION
 }
 
-enum class Order() {
-    ASCENDING(), DESCENDING()
+enum class Order {
+    ASCENDING, DESCENDING
 }
 
 
