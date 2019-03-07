@@ -74,6 +74,8 @@ enum class Sort {
     OWNED, DATE_PURCHASED, PURCHASE_LOCATION, CONDITION
 }
 
-
+enum class Order() {
+    ASCENDING(), DESCENDING()
+}
 
 

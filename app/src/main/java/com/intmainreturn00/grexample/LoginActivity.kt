@@ -1,6 +1,7 @@
 package com.intmainreturn00.grexample
 
 import android.os.Bundle
+import com.intmainreturn00.grapi.Order
 import com.intmainreturn00.grapi.Sort
 import com.intmainreturn00.grapi.grapi
 import kotlinx.android.synthetic.main.login_main.*
@@ -44,7 +45,8 @@ class LoginActivity : ScopedAppActivity() {
                 userId.id,
                 "read",
                 1, 2,
-                sort = Sort.NUM_PAGES
+                sort = Sort.NUM_PAGES,
+                order = Order.DESCENDING
             )
 
             println(userId)

@@ -116,7 +116,8 @@ object grapi {
         page: Int = 1,
         perPage: Int = 200,
         search: String = "",
-        sort: Sort = Sort.EMPTY
+        sort: Sort = Sort.EMPTY,
+        order: Order = Order.DESCENDING
     ): ReviewList =
         withContext(Dispatchers.IO) {
             val params =
@@ -128,7 +129,8 @@ object grapi {
                     "per_page" to perPage.toString(),
                     "search" to search,
                     "key" to oauth.apiKey,
-                    "sort" to (if (sort == Sort.EMPTY) "" else sort.toString().toLowerCase())
+                    "sort" to (if (sort == Sort.EMPTY) "" else sort.toString().toLowerCase()),
+                    "order" to (if (order == Order.DESCENDING) "d" else "a")
                 )
 
             val xml = oauth.executeSignedRequest(
