@@ -98,19 +98,7 @@ object grapi {
     }
 
 
-//    suspend fun getUserOwnedBooks(page: Int, userId: String) = withContext(Dispatchers.IO) {
-//        val params = mapOf("page" to page.toString(), "id" to userId)
-//        val xml = oauth.executeSignedRequest(
-//            "https://www.goodreads.com/owned_books/user?format=xml",
-//            accessToken,
-//            params
-//        ).body
-//        //parseUserShelves(xml)
-//        xml
-//    }
-
-
-    suspend fun getBooksFromShelf(
+    suspend fun getReviewList(
         userId: String,
         shelf: String = "",
         page: Int = 1,

@@ -40,8 +40,7 @@ class LoginActivity : ScopedAppActivity() {
         launch {
             val userId = grapi.getUserId()
             val shelves = grapi.getUserShelves(1, userId.id)
-            //val ownedBooks = grapi.getUserOwnedBooks(1, userId.id)
-            val booksFromShelf = grapi.getBooksFromShelf(
+            val reviews = grapi.getReviewList(
                 userId.id,
                 "read",
                 1, 2,
@@ -51,8 +50,8 @@ class LoginActivity : ScopedAppActivity() {
 
             println(userId)
             println(shelves)
-            //println(ownedBooks)
-            println(booksFromShelf)
+            println(reviews)
+
         }
     }
 
