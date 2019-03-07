@@ -129,4 +129,26 @@ object grapi {
         }
 
 
+    suspend fun getBookByISBN(isbn: String): Book = withContext(Dispatchers.IO) {
+        val params = mapOf("key" to oauth.apiKey)
+
+        val xml = oauth.executeSignedRequest(
+            "https://www.goodreads.com/book/isbn/${isbn}?format=xml",
+            accessToken, params
+        ).body
+        parseBook(xml)
+    }
+
+
+    suspend fun getBookByGRID(id: String): Book = withContext(Dispatchers.IO) {
+        val params = mapOf("key" to oauth.apiKey)
+
+        val xml = oauth.executeSignedRequest(
+            "https://www.goodreads.com/book/show/${id}?format=xml",
+            accessToken, params
+        ).body
+        parseBook(xml)
+    }
+
+
 }

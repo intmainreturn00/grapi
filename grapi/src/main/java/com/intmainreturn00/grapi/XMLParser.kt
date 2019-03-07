@@ -73,6 +73,25 @@ private fun readShelf(parser: XmlPullParser): Shelf {
 }
 
 
+fun parseBook(xml: String): Book {
+    val parser = Xml.newPullParser()
+    parser.setInput(StringReader(xml))
+
+    var book: Book? = null
+
+    while (parser.next() != XmlPullParser.END_DOCUMENT) {
+        if (parser.eventType != XmlPullParser.START_TAG) {
+            continue
+        }
+        when (parser.name) {
+            "book" -> book = readBook(parser)
+        }
+    }
+
+    return book!!
+}
+
+
 fun parseReviewList(xml: String): ReviewList {
     val parser = Xml.newPullParser()
     parser.setInput(StringReader(xml))
@@ -280,7 +299,6 @@ private fun readWorkId(parser: XmlPullParser): String {
     }
     return id
 }
-
 
 
 private fun parseText(parser: XmlPullParser): String {
