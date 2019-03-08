@@ -1,17 +1,19 @@
 package com.intmainreturn00.grapi
 
-data class UserId(val id: String, val name: String, val link: String)
+interface Model
 
-data class UserShelves(val start: Int, val end: Int, val total: Int, val shelves: List<Shelf>)
+data class UserId(val id: String, val name: String, val link: String): Model
 
-data class Shelf(val id: String, val name: String, val bookCount: Int)
+data class UserShelves(val start: Int, val end: Int, val total: Int, val shelves: List<Shelf>): Model
+
+data class Shelf(val id: String, val name: String, val bookCount: Int): Model
 
 data class ReviewList(
     val start: Int,
     val end: Int,
     val total: Int,
     val reviews: List<Review>
-)
+): Model
 
 data class Review(
     val id: String,
@@ -24,7 +26,7 @@ data class Review(
     val startedAt: String,
     val dateAdded: String,
     val dateUpdated: String
-)
+): Model
 
 data class Book(
     val id: String,
@@ -49,7 +51,7 @@ data class Book(
     val description: String,
     val authors: List<Author>,
     val workId: String
-)
+): Model
 
 data class Author(
     val id: String,
@@ -61,14 +63,14 @@ data class Author(
     val averageRating: Float?,
     val ratingsCount: Int?,
     val textReviewsCount: Int?
-)
+): Model
 
 data class SearchResults(
     val start: Int,
     val end: Int,
     val total: Int,
     val results: List<SearchResult>
-)
+): Model
 
 data class SearchResult(
     val workId: String,
@@ -81,7 +83,7 @@ data class SearchResult(
     val averageRating: Float?,
     val ratingsCount: Int?,
     val textReviewsCount: Int?
-)
+): Model
 
 
 enum class Sort {

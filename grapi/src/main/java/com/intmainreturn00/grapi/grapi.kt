@@ -87,14 +87,14 @@ object grapi {
 
     suspend fun getUserId(): UserId = withContext(Dispatchers.IO) {
         val xml = oauth.executeSignedRequest("https://www.goodreads.com/api/auth_user", accessToken).body
-        parseUserId(xml)
+        parse<UserId>(xml)
     }
 
 
     suspend fun getUserShelves(page: Int, userId: String): UserShelves = withContext(Dispatchers.IO) {
         val params = mapOf("page" to page.toString(), "user_id" to userId)
         val xml = oauth.executeSignedRequest("https://www.goodreads.com/shelf/list.xml", accessToken, params).body
-        parseUserShelves(xml)
+        parse<UserShelves>(xml)
     }
 
 
@@ -124,7 +124,7 @@ object grapi {
                 "https://www.goodreads.com/review/list/${userId}.xml",
                 accessToken, params
             ).body
-            parseReviewList(xml)
+            parse<ReviewList>(xml)
         }
 
 
@@ -134,7 +134,7 @@ object grapi {
             "https://www.goodreads.com/book/isbn/${isbn}?format=xml",
             accessToken, params
         ).body
-        parseBook(xml)
+        parse<Book>(xml)
     }
 
 
@@ -144,17 +144,17 @@ object grapi {
             "https://www.goodreads.com/book/show/${id}?format=xml",
             accessToken, params
         ).body
-        parseBook(xml)
+        parse<Book>(xml)
     }
 
 
-    suspend fun getSearchResults(query: String, page: Int = 1) = withContext(Dispatchers.IO) {
+    suspend fun getSearchResults(query: String, page: Int = 1): SearchResults = withContext(Dispatchers.IO) {
         val params = mapOf("key" to oauth.apiKey, "page" to page.toString(), "q" to query)
         val xml = oauth.executeSignedRequest(
             "https://www.goodreads.com/search/index.xml",
             accessToken, params
         ).body
-        parseSearchResults(xml)
+        parse<SearchResults>(xml)
     }
 
 }
