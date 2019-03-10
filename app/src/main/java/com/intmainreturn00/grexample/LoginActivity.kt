@@ -59,6 +59,8 @@ class LoginActivity : ScopedAppActivity() {
             println(shelves)
             println(reviews.reviews[1])
             println(user)
+            //val allReviews = grapi.getAllReviews(userId.id)
+
 
         }
     }

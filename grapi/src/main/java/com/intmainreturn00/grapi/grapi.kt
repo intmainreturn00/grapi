@@ -168,4 +168,21 @@ object grapi {
     }
 
 
+    // :TODO: add fallback and retry
+    suspend fun getAllReviews(
+        userId: String,
+        sort: Sort = Sort.EMPTY,
+        order: Order = Order.DESCENDING
+    ): List<Review> = withContext(Dispatchers.IO) {
+        val reviews: MutableList<Review> = mutableListOf()
+        var page = 1
+        val startPiece = getReviewList(userId, page = page++, perPage = 200, sort = sort, order = order)
+        reviews.addAll(startPiece.reviews)
+        while(reviews.size < startPiece.total) {
+            val piece = getReviewList(userId, page = page++, perPage = 200, sort = sort, order = order)
+            reviews.addAll(piece.reviews)
+        }
+        reviews
+    }
+
 }
