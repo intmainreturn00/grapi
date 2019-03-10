@@ -13,6 +13,6 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
-        grapi.init(BuildConfig.goodreadsKey, BuildConfig.goodreadsSecret, BuildConfig.goodreadsCallback)
+        grapi.init(this, BuildConfig.goodreadsKey, BuildConfig.goodreadsSecret, BuildConfig.goodreadsCallback)
     }
 }

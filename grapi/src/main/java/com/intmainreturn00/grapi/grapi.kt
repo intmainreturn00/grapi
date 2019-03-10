@@ -1,6 +1,8 @@
 package com.intmainreturn00.grapi
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import com.github.scribejava.core.builder.ServiceBuilder
 import com.github.scribejava.core.model.*
@@ -11,18 +13,30 @@ import kotlinx.coroutines.withContext
 
 object grapi {
 
-    private val TAG = "grapi:"
+    private const val TAG = "grapi:"
+    private const val PREF_FILE = "token_storage"
+    private const val PREF_TOKEN = "token"
+    private const val PREF_SECRET = "token_secret"
+    private lateinit var sharedPref: SharedPreferences
     private lateinit var requestToken: OAuth1RequestToken
     private lateinit var accessToken: OAuth1AccessToken
     private lateinit var oauth: OAuth10aService
     private var initialize = false
-    private var loggedIn = false
     private var requestTokenObtained = false
+    private var loggedIn = false
 
-    fun init(devKey: String, devSecret: String, callback: String) {
+    fun init(context: Context, devKey: String, devSecret: String, callback: String) {
         oauth = ServiceBuilder(devKey).apiSecret(devSecret)
             .callback(callback).build(GoodreadsOauthApi.instance())
         initialize = true
+        sharedPref = context.getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE)
+        // check for token
+        val token = sharedPref.getString(PREF_TOKEN, "")
+        val tokenSecret = sharedPref.getString(PREF_SECRET, "")
+        if (token != null && !token.isEmpty() && tokenSecret != null && !tokenSecret.isEmpty()) {
+            accessToken = OAuth1AccessToken(token, tokenSecret)
+            loggedIn = true
+        }
     }
 
 
@@ -77,6 +91,12 @@ object grapi {
             // user accept authorization -> request accessToken
             withContext(Dispatchers.IO) {
                 accessToken = oauth.accessToken(requestToken, clientOauthToken)!!
+                with(sharedPref.edit()) {
+                    putString(PREF_TOKEN, accessToken.token)
+                    putString(PREF_SECRET, accessToken.tokenSecret)
+                    commit()
+                }
+                loggedIn = true
             }
             withContext(Dispatchers.Main) {
                 result(true)
@@ -178,7 +198,7 @@ object grapi {
         var page = 1
         val startPiece = getReviewList(userId, page = page++, perPage = 200, sort = sort, order = order)
         reviews.addAll(startPiece.reviews)
-        while(reviews.size < startPiece.total) {
+        while (reviews.size < startPiece.total) {
             val piece = getReviewList(userId, page = page++, perPage = 200, sort = sort, order = order)
             reviews.addAll(piece.reviews)
         }

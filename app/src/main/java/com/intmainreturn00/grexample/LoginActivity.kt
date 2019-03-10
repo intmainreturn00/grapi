@@ -22,6 +22,8 @@ class LoginActivity : ScopedAppActivity() {
                     grapi.loginStart()
                     browse(grapi.getAuthorizationUrl())
                 }
+            } else {
+                tryUseApi()
             }
         }
 
