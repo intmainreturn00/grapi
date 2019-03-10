@@ -2,18 +2,44 @@ package com.intmainreturn00.grapi
 
 interface Model
 
-data class UserId(val id: String, val name: String, val link: String): Model
+data class UserId(val id: String, val name: String, val link: String) : Model
 
-data class UserShelves(val start: Int, val end: Int, val total: Int, val shelves: List<Shelf>): Model
+data class User(
+    val id: String,
+    val name: String,
+    val username: String,
+    val link: String,
+    val imageUrl: String,
+    val imageUrlSmall: String,
+    val about: String,
+    val age: Int?,
+    val gender: String,
+    val location: String,
+    val website: String,
+    val joined: String,
+    val lastActive: String,
+    val interests: String,
+    val favoriteBooks: String,
+    // favorite_authors :TODO:
+    val rssUpdates: String,
+    val rssReviews: String,
+    val friendsCount: Int?,
+    val groupsCount: Int?,
+    val reviewsCount: Int?,
+    val shelves: List<Shelf>
+    //updates :TODO:
+) : Model
 
-data class Shelf(val id: String, val name: String, val bookCount: Int): Model
+data class UserShelves(val start: Int, val end: Int, val total: Int, val shelves: List<Shelf>) : Model
+
+data class Shelf(val id: String, val name: String, val bookCount: Int) : Model
 
 data class ReviewList(
     val start: Int,
     val end: Int,
     val total: Int,
     val reviews: List<Review>
-): Model
+) : Model
 
 data class Review(
     val id: String,
@@ -26,7 +52,7 @@ data class Review(
     val startedAt: String,
     val dateAdded: String,
     val dateUpdated: String
-): Model
+) : Model
 
 data class Book(
     val id: String,
@@ -51,7 +77,7 @@ data class Book(
     val description: String,
     val authors: List<Author>,
     val workId: String
-): Model
+) : Model
 
 data class Author(
     val id: String,
@@ -63,14 +89,14 @@ data class Author(
     val averageRating: Float?,
     val ratingsCount: Int?,
     val textReviewsCount: Int?
-): Model
+) : Model
 
 data class SearchResults(
     val start: Int,
     val end: Int,
     val total: Int,
     val results: List<SearchResult>
-): Model
+) : Model
 
 data class SearchResult(
     val workId: String,
@@ -83,7 +109,7 @@ data class SearchResult(
     val averageRating: Float?,
     val ratingsCount: Int?,
     val textReviewsCount: Int?
-): Model
+) : Model
 
 
 enum class Sort {

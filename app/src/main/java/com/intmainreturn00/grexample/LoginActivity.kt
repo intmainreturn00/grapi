@@ -53,11 +53,12 @@ class LoginActivity : ScopedAppActivity() {
 
             val res = grapi.getSearchResults("Wiedźmin")
 
+            val user = grapi.getUser(userId.id)
 
             println(userId)
             println(shelves)
-//            println(reviews.reviews[1])
-            println(res)
+            println(reviews.reviews[1])
+            println(user)
 
         }
     }

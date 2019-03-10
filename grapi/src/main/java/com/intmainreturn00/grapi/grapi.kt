@@ -157,4 +157,15 @@ object grapi {
         parse<SearchResults>(xml)
     }
 
+
+    suspend fun getUser(userId: String) = withContext(Dispatchers.IO) {
+        val params = mapOf("key" to oauth.apiKey, "id" to userId)
+        val xml = oauth.executeSignedRequest(
+            "https://www.goodreads.com/user/show/${userId}.xml",
+            accessToken, params
+        ).body
+        parse<User>(xml)
+    }
+
+
 }

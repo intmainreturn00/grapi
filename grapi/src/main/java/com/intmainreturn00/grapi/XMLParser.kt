@@ -11,9 +11,9 @@ internal inline fun <reified T : Model> parse(xml: String) = when (T::class) {
     SearchResults::class -> parseSearchResults(xml)
     Book::class -> parseBook(xml)
     ReviewList::class -> parseReviewList(xml)
+    User::class -> parseUser(xml)
     else -> throw Exception("can't match proper parser")
 } as T
-
 
 
 internal fun parseUserId(xml: String): UserId {
@@ -122,4 +122,22 @@ internal fun parseReviewList(xml: String): ReviewList {
     }
 
     return ReviewList(start, end, total, reviews)
+}
+
+internal fun parseUser(xml: String): User {
+    val parser = Xml.newPullParser()
+    parser.setInput(StringReader(xml))
+
+    var user: User? = null
+
+    while (parser.next() != XmlPullParser.END_DOCUMENT) {
+        if (parser.eventType != XmlPullParser.START_TAG) {
+            continue
+        }
+        when (parser.name) {
+            "user" -> user = readUser(parser)
+        }
+    }
+
+    return user!!
 }

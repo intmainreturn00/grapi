@@ -2,6 +2,23 @@ package com.intmainreturn00.grapi
 
 import org.xmlpull.v1.XmlPullParser
 
+internal fun readShelves(parser: XmlPullParser): MutableList<Shelf> {
+    val shelves = mutableListOf<Shelf>()
+
+    while (parser.next() != XmlPullParser.END_TAG) {
+        if (parser.eventType != XmlPullParser.START_TAG) {
+            continue
+        }
+        when (parser.name) {
+            "user_shelf" -> shelves.add(readShelf(parser))
+            else -> skip(parser)
+        }
+    }
+
+    return shelves
+}
+
+
 internal fun readShelf(parser: XmlPullParser): Shelf {
     var id = ""
     var name = ""
@@ -15,6 +32,7 @@ internal fun readShelf(parser: XmlPullParser): Shelf {
             "id" -> id = readText(parser)
             "name" -> name = readText(parser)
             "book_count" -> bookCount = readText(parser).toInt()
+            else -> skip(parser)
         }
     }
 
@@ -330,6 +348,86 @@ internal fun readAuthor(parser: XmlPullParser): Author {
     }
 
     return Author(id, name, role, imageUrl, imageUrlSmall, link, averageRating, ratingsCount, textReviewsCount)
+}
+
+
+internal fun readUser(parser: XmlPullParser): User {
+    var id = ""
+    var name = ""
+    var username = ""
+    var link = ""
+    var imageUrl = ""
+    var imageUrlSmall = ""
+    var about = ""
+    var age: Int? = null
+    var gender = ""
+    var location = ""
+    var website = ""
+    var joined = ""
+    var lastActive = ""
+    var interests = ""
+    var favoriteBooks = ""
+    var rssUpdates = ""
+    var rssReviews = ""
+    var friendsCount: Int? = null
+    var groupsCount: Int? = null
+    var reviewsCount: Int? = null
+    var shelves = mutableListOf<Shelf>()
+
+    while (parser.next() != XmlPullParser.END_TAG) {
+        if (parser.eventType != XmlPullParser.START_TAG) {
+            continue
+        }
+        when (parser.name) {
+            "id" -> id = readText(parser)
+            "name" -> name = readText(parser)
+            "username" -> username = readText(parser)
+            "link" -> link = readText(parser)
+            "image_url" -> imageUrl = readText(parser)
+            "small_image_url" -> imageUrlSmall = readText(parser)
+            "about" -> about = readText(parser)
+            "age" -> age = readInt(parser)
+            "gender" -> gender = readText(parser)
+            "location" -> location = readText(parser)
+            "website" -> website = readText(parser)
+            "joined" -> joined = readText(parser)
+            "last_active" -> lastActive = readText(parser)
+            "interests" -> interests = readText(parser)
+            "favorite_books" -> favoriteBooks = readText(parser)
+            "updates_rss_url" -> rssUpdates = readText(parser)
+            "reviews_rss_url" -> rssReviews = readText(parser)
+            "friends_count" -> friendsCount = readInt(parser)
+            "groups_count" -> groupsCount = readInt(parser)
+            "reviews_count" -> reviewsCount = readInt(parser)
+            "user_shelves" -> shelves = readShelves(parser)
+            else -> skip(parser)
+        }
+    }
+
+    return User(
+        id,
+        name,
+        username,
+        link,
+        imageUrl,
+        imageUrlSmall,
+        about,
+        age,
+        gender,
+        location,
+        website,
+        joined,
+        lastActive,
+        interests,
+        favoriteBooks,
+        rssUpdates,
+        rssReviews,
+        friendsCount,
+        groupsCount,
+        reviewsCount,
+        shelves
+    )
+
 }
 
 
