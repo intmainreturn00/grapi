@@ -111,12 +111,12 @@ launch {
                 1, 2,
                 sort = Sort.NUM_PAGES,
                 order = Order.DESCENDING
-   )
-   val book = grapi.getBookByISBN("837054150X")
-   val book2 = grapi.getBookByGRID("13588846")
-   val res = grapi.getSearchResults("Wiedźmin")
-   val user = grapi.getUser(userId.id)
-   val allReviews = grapi.getAllReviews(userId.id)
+   	)
+	val book = grapi.getBookByISBN("837054150X")
+   	val book2 = grapi.getBookByGRID("13588846")
+   	val res = grapi.getSearchResults("Wiedźmin")
+   	val user = grapi.getUser(userId.id)
+   	val allReviews = grapi.getAllReviews(userId.id)
 }
 ```
 
