@@ -25,7 +25,7 @@ If you’d like the work, star this repo ⭐️ or you can [buy me a cup of coff
 1. Make sure you have the jitpack repo in your project level `build.gradle` :
 
 
-```
+```gradle
 allprojects {
     repositories {
 
@@ -35,7 +35,7 @@ allprojects {
 ```
 
 2. Add the dependency to your app `build.gradle` :
-```
+```gradle
 implementation 'com.github.intmainreturn00:grapi:1.1'
 ```
 
@@ -52,7 +52,7 @@ I recommend storing api key and secret at global `gradle.properties` file - this
 
 4. OAuth authorisation requires redirect, so you need to add this intent filter with your callback url, given from goodreads registration. (_change host and scheme to your names - at sample app I used manifestPlaceholders for it_)
 
-```
+```xml
 <intent-filter>
     <action android:name="android.intent.action.VIEW"/>
     <category android:name="android.intent.category.DEFAULT"/>
@@ -66,13 +66,13 @@ I recommend storing api key and secret at global `gradle.properties` file - this
 ## Usage
 Initialise before usage. (_I don’t keep reference to context, just using it for shared prefs, so don’t be afraid of memory leaks_)
 
-```
+```kotlin
 grapi.init(this, BuildConfig.goodreadsKey, BuildConfig.goodreadsSecret, BuildConfig.goodreadsCallback)
 ```
 
 ### OAuth:
 
-```
+```kotlin
 login.setOnClickListener {
     if (!grapi.isLoggedIn()) {
     	launch {
@@ -86,14 +86,14 @@ login.setOnClickListener {
 ```
 the code below should be called from activity with previously added intent filter to catch redirect intent from browser
 
-```
+```kotlin
 launch {
-	grapi.loginEnd(intent) { ok ->
-   	if (ok) {
-       	   // here we can start using api!
-           tryUseApi()
-       }
-   }
+  grapi.loginEnd(intent) { ok ->
+    if (ok) {
+      // here we can start using api!
+      tryUseApi()
+    }
+  }
 }
 ```
 
@@ -101,22 +101,22 @@ and thats it for login. You can start making a requests to API. The sdk will kee
 
 ### Requests
 
-```
+```kotlin
 launch {
-	val userId = grapi.getUserId()
-	val shelves = grapi.getUserShelves(1, userId.id)
-	val reviews = grapi.getReviewList(
-                userId.id,
-                "read",
-                1, 2,
-                sort = Sort.NUM_PAGES,
-                order = Order.DESCENDING
-   	)
-	val book = grapi.getBookByISBN("837054150X")
-   	val book2 = grapi.getBookByGRID("13588846")
-   	val res = grapi.getSearchResults("Wiedźmin")
-   	val user = grapi.getUser(userId.id)
-   	val allReviews = grapi.getAllReviews(userId.id)
+    val userId = grapi.getUserId()
+    val shelves = grapi.getUserShelves(1, userId.id)
+    val reviews = grapi.getReviewList(
+        userId.id,
+        "read",
+        1, 2,
+        sort = Sort.NUM_PAGES,
+        order = Order.DESCENDING
+    )
+    val book = grapi.getBookByISBN("837054150X")
+    val book2 = grapi.getBookByGRID("13588846")
+    val res = grapi.getSearchResults("Wiedźmin")
+    val user = grapi.getUser(userId.id)
+    val allReviews = grapi.getAllReviews(userId.id)
 }
 ```
 
