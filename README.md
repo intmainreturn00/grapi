@@ -2,6 +2,10 @@
 
 ![](README/goodreads-login-button-7bd184d3077cf3580f68aa8a00de39ce.png)
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+<img src="https://img.shields.io/badge/made%20with-kotlin-blue.svg" alt="made with Kotlin">
+![GitHub release](https://img.shields.io/github/release/intmainreturn00/grapi.svg)
+![GitHub stars](https://img.shields.io/github/stars/intmainreturn00/grapi.svg?style=social)
 
 Goodreads _unofficial_ android SDK.
 
@@ -9,14 +13,9 @@ Goodreads _unofficial_ android SDK.
 SDK handles login via OAuth with access token storage management and allow you to make requests to [goodreads api](https://www.goodreads.com/api/index) with no pain. All code written in modern Kotlin. 🚀
 
 Currently supported api methods: 
-* getUserId
-* getUser
-* getUserShelves
-* getReviewList
-* getBookByISBN
-* getBookByGRID
-* getSearchResults
-* getAllReviews
+
+[![](https://img.shields.io/badge/-getUserId-blue.svg)]() [![](https://img.shields.io/badge/-getUser-blue.svg)]() [![](https://img.shields.io/badge/-getUserShelves-blue.svg)]() [![](https://img.shields.io/badge/-getReviewList-blue.svg)]() 
+[![](https://img.shields.io/badge/-getBookByISBN-blue.svg)]() [![](https://img.shields.io/badge/-getBookByGRID-blue.svg)]() [![](https://img.shields.io/badge/-getSearchResults-blue.svg)]() [![](https://img.shields.io/badge/-getAllReviews-blue.svg)]()
 
 I’m currently adding the rest of the methods, so if you have feature requests or pull requests or just a comments - open an issue and I will try to help you. RFC.
 
