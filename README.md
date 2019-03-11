@@ -18,7 +18,7 @@ Currently supported api methods:
 * getSearchResults
 * getAllReviews
 
-I’m currently adding the rest of the methods, so if you have feature requests or pull requests or just a comments - open an issue and will try to help you. RFC.
+I’m currently adding the rest of the methods, so if you have feature requests or pull requests or just a comments - open an issue and I will try to help you. RFC.
 
 If you’d like the work, star this repo ⭐️ or you can [buy me a cup of coffee](http://ko-fi.com/intmainreturn00) ☕️
 
