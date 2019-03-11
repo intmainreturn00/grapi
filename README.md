@@ -90,7 +90,7 @@ the code below should be called from activity with previously added intent filte
 launch {
 	grapi.loginEnd(intent) { ok ->
    	if (ok) {
-       	// here we can start using api!
+       	   // here we can start using api!
            tryUseApi()
        }
    }
