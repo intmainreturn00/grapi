@@ -76,7 +76,7 @@ grapi.init(this, BuildConfig.goodreadsKey, BuildConfig.goodreadsSecret, BuildCon
 login.setOnClickListener {
     if (!grapi.isLoggedIn()) {
     	launch {
-       	grapi.loginStart()
+       	   grapi.loginStart()
            browse(grapi.getAuthorizationUrl())
        }
     } else {
