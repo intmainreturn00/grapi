@@ -78,7 +78,7 @@ login.setOnClickListener {
     	launch {
        	   grapi.loginStart()
            browse(grapi.getAuthorizationUrl())
-       }
+        }
     } else {
        tryUseApi()
     }
