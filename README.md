@@ -1,6 +1,8 @@
 #  GR_API
 
 ![](README/goodreads-login-button-7bd184d3077cf3580f68aa8a00de39ce.png)
+
+
 Goodreads _unofficial_ android SDK.
 
 ## Features
@@ -18,7 +20,7 @@ Currently supported api methods:
 
 I’m currently adding the rest of the methods, so if you have feature requests or pull requests or just a comments - open an issue and will try to help you. RFC.
 
-If you’d like the work, give a star or you can [buy me a cup of coffee](http://ko-fi.com/intmainreturn00) =)
+If you’d like the work, star this repo ⭐️ or you can [buy me a cup of coffee](http://ko-fi.com/intmainreturn00) ☕️
 
 ## Setup
 1. Make sure you have the jitpack repo in your project level `build.gradle` :
