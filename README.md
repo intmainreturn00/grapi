@@ -19,6 +19,8 @@ Currently supported api methods:
 
 I’m currently adding the rest of the methods, so if you have feature requests or pull requests or just a comments - open an issue and I will try to help you. RFC.
 
+You can find implementation details at my [Medium Post](https://medium.com/@intmainreturn00/goodreads-api-from-android-with-kotlin-fd8c2c7338d8) <img src="https://github.com/Medium/medium-logos/blob/master/monogram/Monogram.png" width="20">
+
 If you’d like the work, star this repo ⭐️ or you can [buy me a cup of coffee](http://ko-fi.com/intmainreturn00) ☕️
 
 ## Setup
