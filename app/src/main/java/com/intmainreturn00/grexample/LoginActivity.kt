@@ -53,12 +53,14 @@ class LoginActivity : ScopedAppActivity() {
             val book2 = grapi.getBookByGRID("13588846")
             val res = grapi.getSearchResults("Wiedźmin")
             val user = grapi.getUser(userId.id)
-            val allReviews = grapi.getAllReviews(userId.id)
+            val allReviews = grapi.getAllReviews(userId.id, shelf = "favorites")
+            val allShelves = grapi.getAllShelves(userId.id)
 
-//            println(userId)
-//            println(shelves)
-//            println(reviews.reviews[1])
-//            println(user)
+            println(userId)
+            println(allShelves)
+            println(allReviews)
+            println(reviews.reviews[1])
+            println(user)
 
 
 

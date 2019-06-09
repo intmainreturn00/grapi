@@ -191,18 +191,32 @@ object grapi {
     // :TODO: add fallback and retry
     suspend fun getAllReviews(
         userId: String,
+        shelf: String = "",
         sort: Sort = Sort.EMPTY,
         order: Order = Order.DESCENDING
     ): List<Review> = withContext(Dispatchers.IO) {
         val reviews: MutableList<Review> = mutableListOf()
         var page = 1
-        val startPiece = getReviewList(userId, page = page++, perPage = 200, sort = sort, order = order)
+        val startPiece = getReviewList(userId, page = page++, perPage = 200, sort = sort, order = order, shelf = shelf)
         reviews.addAll(startPiece.reviews)
         while (reviews.size < startPiece.total) {
-            val piece = getReviewList(userId, page = page++, perPage = 200, sort = sort, order = order)
+            val piece = getReviewList(userId, page = page++, perPage = 200, sort = sort, order = order, shelf = shelf)
             reviews.addAll(piece.reviews)
         }
         reviews
+    }
+
+
+    suspend fun getAllShelves(userId: String): List<Shelf> = withContext(Dispatchers.IO) {
+        val shelves: MutableList<Shelf> = mutableListOf()
+        var page = 1
+        val startPiece = getUserShelves(page = page++, userId = userId)
+        shelves.addAll(startPiece.shelves)
+        while (shelves.size < startPiece.total) {
+            val piece = getUserShelves(page = page++, userId = userId)
+            shelves.addAll(piece.shelves)
+        }
+        shelves
     }
 
 }
