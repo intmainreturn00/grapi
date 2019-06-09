@@ -15,7 +15,10 @@ SDK handles login via OAuth with access token storage management and allow you t
 Currently supported api methods: 
 
 [![](https://img.shields.io/badge/-getUserId-blue.svg)]() [![](https://img.shields.io/badge/-getUser-blue.svg)]() [![](https://img.shields.io/badge/-getUserShelves-blue.svg)]() [![](https://img.shields.io/badge/-getReviewList-blue.svg)]() 
-[![](https://img.shields.io/badge/-getBookByISBN-blue.svg)]() [![](https://img.shields.io/badge/-getBookByGRID-blue.svg)]() [![](https://img.shields.io/badge/-getSearchResults-blue.svg)]() [![](https://img.shields.io/badge/-getAllReviews-blue.svg)]()
+[![](https://img.shields.io/badge/-getBookByISBN-blue.svg)]() [![](https://img.shields.io/badge/-getBookByGRID-blue.svg)]() [![](https://img.shields.io/badge/-getSearchResults-blue.svg)]() 
+
+[![](https://img.shields.io/badge/-getAllReviews-blue.svg)]()
+[![](https://img.shields.io/badge/-getAllShelves-blue.svg)]()
 
 I’m currently adding the rest of the methods, so if you have feature requests or pull requests or just a comments - open an issue and I will try to help you. RFC.
 
@@ -118,7 +121,8 @@ launch {
     val book2 = grapi.getBookByGRID("13588846")
     val res = grapi.getSearchResults("Wiedźmin")
     val user = grapi.getUser(userId.id)
-    val allReviews = grapi.getAllReviews(userId.id)
+    val allReviews = grapi.getAllReviews(userId.id, shelf = "favorites")
+    val allShelves = grapi.getAllShelves(userId.id)
 }
 ```
 
