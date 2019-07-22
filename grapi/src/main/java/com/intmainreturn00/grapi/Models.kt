@@ -34,6 +34,9 @@ data class UserShelves(val start: Int, val end: Int, val total: Int, val shelves
 
 data class Shelf(val id: String, val name: String, val bookCount: Int) : Model
 
+// bookshelf view from review/list?v=2
+data class BookShelf(val id: String, val name: String): Model
+
 data class ReviewList(
     val start: Int,
     val end: Int,
@@ -51,7 +54,8 @@ data class Review(
     val readAt: String,
     val startedAt: String,
     val dateAdded: String,
-    val dateUpdated: String
+    val dateUpdated: String,
+    val shelves: List<BookShelf>
 ) : Model
 
 data class Book(

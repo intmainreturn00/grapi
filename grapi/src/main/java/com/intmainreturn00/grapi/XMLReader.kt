@@ -195,6 +195,7 @@ internal fun readReview(parser: XmlPullParser): Review {
     var startedAt = ""
     var dateAdded = ""
     var dateUpdated = ""
+    var shelves = listOf<BookShelf>()
 
     while (parser.next() != XmlPullParser.END_TAG) {
         if (parser.eventType != XmlPullParser.START_TAG) {
@@ -211,11 +212,33 @@ internal fun readReview(parser: XmlPullParser): Review {
             "started_at" -> startedAt = readText(parser)
             "date_added" -> dateAdded = readText(parser)
             "date_updated" -> dateUpdated = readText(parser)
+            "shelves" -> shelves = readBookShelves(parser)
             else -> skip(parser)
         }
     }
 
-    return Review(id, book!!, rating, readCount, body, owned, readAt, startedAt, dateAdded, dateUpdated)
+    return Review(id, book!!, rating, readCount, body, owned, readAt, startedAt, dateAdded, dateUpdated, shelves)
+}
+
+
+internal fun readBookShelves(parser: XmlPullParser): List<BookShelf> {
+    val results = mutableListOf<BookShelf>()
+
+    while (parser.next() != XmlPullParser.END_TAG) {
+        if (parser.eventType != XmlPullParser.START_TAG) {
+            continue
+        }
+        when (parser.name) {
+            "shelf" -> {
+                val id = readArg(parser, "id")
+                val name = readArg(parser, "name")
+                results.add(BookShelf(id, name))
+                parser.nextTag()
+            }
+            else -> skip(parser)
+        }
+    }
+    return results
 }
 
 
