@@ -41,7 +41,7 @@ allprojects {
 
 2. Add the dependency to your app `build.gradle` :
 ```gradle
-implementation 'com.github.intmainreturn00:grapi:1.1'
+implementation 'com.github.intmainreturn00:grapi:1.2'
 ```
 
 3. Register your app at [Goodreads](https://www.goodreads.com/api/keys)
