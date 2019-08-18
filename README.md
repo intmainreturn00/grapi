@@ -41,7 +41,7 @@ allprojects {
 
 2. Add the dependency to your app `build.gradle` :
 ```gradle
-implementation 'com.github.intmainreturn00:grapi:1.3'
+implementation 'com.github.intmainreturn00:grapi:1.4'
 ```
 
 3. Register your app at [Goodreads](https://www.goodreads.com/api/keys)
@@ -77,6 +77,11 @@ grapi.init(this, BuildConfig.goodreadsKey, BuildConfig.goodreadsSecret, BuildCon
 
 ### OAuth:
 
+Oauth flow:
+1) Call [loginStart].
+2) Redirect to url from [getAuthorizationUrl].
+3) After user returns back, [loginEnd] with given intent.
+
 ```kotlin
 login.setOnClickListener {
     if (!grapi.isLoggedIn()) {
@@ -102,7 +107,7 @@ launch {
 }
 ```
 
-and thats it for login. You can start making a requests to API. The sdk will keep access token at private shared prefs so you can just start using the api second time the user gets into your app. 
+and that's it for login. You can start making a requests to API. The sdk will keep access token at private shared prefs so you can just start using the api second time the user gets into your app. 
 
 ### Requests
 
@@ -122,6 +127,8 @@ launch {
     val res = grapi.getSearchResults("Wiedźmin")
     val user = grapi.getUser(userId.id)
     val allReviews = grapi.getAllReviews(userId.id, shelf = "favorites")
+    // concurrent (~x2 faster) version
+    val allReviews2 = grapi.getAllReviewsConcurrent(userId.id, shelf = "favorites")
     val allShelves = grapi.getAllShelves(userId.id)
 }
 ```

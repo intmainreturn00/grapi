@@ -7,9 +7,8 @@ import android.net.Uri
 import com.github.scribejava.core.builder.ServiceBuilder
 import com.github.scribejava.core.model.*
 import com.github.scribejava.core.oauth.OAuth10aService
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-
+import kotlinx.coroutines.*
+import kotlin.math.ceil
 
 object grapi {
 
@@ -17,6 +16,8 @@ object grapi {
     private const val PREF_FILE = "token_storage"
     private const val PREF_TOKEN = "token"
     private const val PREF_SECRET = "token_secret"
+    private const val MAX_PER_PAGE = 200
+    private const val PER_PAGE = 50
     private lateinit var sharedPref: SharedPreferences
     private lateinit var requestToken: OAuth1RequestToken
     private lateinit var accessToken: OAuth1AccessToken
@@ -44,7 +45,14 @@ object grapi {
         return loggedIn
     }
 
-
+    /**
+     * Initiate OAuth flow.
+     *
+     * Oauth flow:
+     *  1) [loginStart]
+     *  2) Redirect to url from [getAuthorizationUrl]
+     *  3) After user returns back, [loginEnd] with given intent
+     */
     suspend fun loginStart() {
         if (!initialize) {
             throw Exception("$TAG init method wasn't called")
@@ -59,6 +67,9 @@ object grapi {
     }
 
 
+    /**
+     * Returns the URL where you should redirect your users to authenticate your application.
+     */
     fun getAuthorizationUrl(): String {
         if (!initialize || !requestTokenObtained) {
             throw Exception("$TAG should call init and loginStart first ")
@@ -67,6 +78,9 @@ object grapi {
     }
 
 
+    /**
+     * Complete OAuth flow.
+     */
     suspend fun loginEnd(intent: Intent, result: (ok: Boolean) -> Unit) {
         if (!initialize) {
             throw Exception("$TAG init method wasn't called")
@@ -122,7 +136,7 @@ object grapi {
         userId: String,
         shelf: String = "",
         page: Int = 1,
-        perPage: Int = 200,
+        perPage: Int = MAX_PER_PAGE,
         search: String = "",
         sort: Sort = Sort.EMPTY,
         order: Order = Order.DESCENDING
@@ -188,7 +202,6 @@ object grapi {
     }
 
 
-    // :TODO: add fallback and retry
     suspend fun getAllReviews(
         userId: String,
         shelf: String = "",
@@ -197,12 +210,52 @@ object grapi {
     ): List<Review> = withContext(Dispatchers.IO) {
         val reviews: MutableList<Review> = mutableListOf()
         var page = 1
-        val startPiece = getReviewList(userId, page = page++, perPage = 200, sort = sort, order = order, shelf = shelf)
+        val startPiece =
+            getReviewList(userId, page = page++, perPage = MAX_PER_PAGE, sort = sort, order = order, shelf = shelf)
         reviews.addAll(startPiece.reviews)
         while (reviews.size < startPiece.total) {
-            val piece = getReviewList(userId, page = page++, perPage = 200, sort = sort, order = order, shelf = shelf)
+            val piece =
+                getReviewList(userId, page = page++, perPage = MAX_PER_PAGE, sort = sort, order = order, shelf = shelf)
             reviews.addAll(piece.reviews)
         }
+        reviews
+    }
+
+    /**
+     * Concurrent (and faster) version of [getAllReviews].
+     *
+     * Semantics of this call is the following:
+     *  1) Send first request to find out a total amount of reviews
+     *  2) Send a bunch of concurrent requests with respect to perPage arg.
+     *  3) Aggregate results
+     *
+     *  Exception propagation used - return only if all requests succeed.
+     *  Use with caution, since it may unintentionally violate GoodReads API rate limits.
+     */
+    suspend fun getAllReviewsConcurrent(
+        userId: String,
+        shelf: String = "",
+        perPage: Int = PER_PAGE,
+        sort: Sort = Sort.EMPTY,
+        order: Order = Order.DESCENDING
+    ): List<Review> = withContext(Dispatchers.IO) {
+        val reviews: MutableList<Review> = mutableListOf()
+        val startPiece = getReviewList(userId, page = 1, perPage = perPage, sort = sort, order = order, shelf = shelf)
+
+        val pages = ceil(startPiece.total / perPage.toFloat()).toInt()
+        val requests = mutableListOf<Deferred<ReviewList>>()
+
+        coroutineScope{
+            repeat(pages - 1) {
+                val deferred = async {
+                    getReviewList(userId, page = it + 2, perPage = perPage, sort = sort, order = order, shelf = shelf)
+                }
+                requests.add(it, deferred)
+            }
+        }
+        reviews.addAll(startPiece.reviews)
+        requests.forEach { reviews.addAll(it.await().reviews) }
+
         reviews
     }
 
