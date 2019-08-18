@@ -18,6 +18,7 @@ Currently supported api methods:
 [![](https://img.shields.io/badge/-getBookByISBN-blue.svg)]() [![](https://img.shields.io/badge/-getBookByGRID-blue.svg)]() [![](https://img.shields.io/badge/-getSearchResults-blue.svg)]() 
 
 [![](https://img.shields.io/badge/-getAllReviews-blue.svg)]()
+[![](https://img.shields.io/badge/-getAllReviewsConcurrent-blue.svg)]()
 [![](https://img.shields.io/badge/-getAllShelves-blue.svg)]()
 
 I’m currently adding the rest of the methods, so if you have feature requests or pull requests or just a comments - open an issue and I will try to help you. RFC.
@@ -78,9 +79,9 @@ grapi.init(this, BuildConfig.goodreadsKey, BuildConfig.goodreadsSecret, BuildCon
 ### OAuth:
 
 Oauth flow:
-1) Call [loginStart].
-2) Redirect to url from [getAuthorizationUrl].
-3) After user returns back, [loginEnd] with given intent.
+1) Call `loginStart()`.
+2) Redirect to url from `getAuthorizationUrl`.
+3) After user returns back, `loginEnd(intent)` with given intent.
 
 ```kotlin
 login.setOnClickListener {
@@ -127,7 +128,7 @@ launch {
     val res = grapi.getSearchResults("Wiedźmin")
     val user = grapi.getUser(userId.id)
     val allReviews = grapi.getAllReviews(userId.id, shelf = "favorites")
-    // concurrent (~x2 faster) version
+    // concurrent (~x2 faster) version of getAllReviews
     val allReviews2 = grapi.getAllReviewsConcurrent(userId.id, shelf = "favorites")
     val allShelves = grapi.getAllShelves(userId.id)
 }
