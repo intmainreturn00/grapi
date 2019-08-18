@@ -7,6 +7,7 @@ import com.intmainreturn00.grapi.grapi
 import kotlinx.android.synthetic.main.login_main.*
 import kotlinx.coroutines.*
 import org.jetbrains.anko.browse
+import kotlin.system.measureTimeMillis
 
 
 class LoginActivity : ScopedAppActivity() {
@@ -53,15 +54,24 @@ class LoginActivity : ScopedAppActivity() {
             val book2 = grapi.getBookByGRID("13588846")
             val res = grapi.getSearchResults("Wiedźmin")
             val user = grapi.getUser(userId.id)
-            val allReviews = grapi.getAllReviews(userId.id, shelf = "favorites")
             val allShelves = grapi.getAllShelves(userId.id)
 
             println(userId)
             println(allShelves)
-            println(allReviews)
             println(reviews.reviews[1])
             println(user)
 
+            val t1 = measureTimeMillis {
+                val res = grapi.getAllReviews(userId.id)
+                println("reviews # = ${res.size}")
+            }
+            println("getAllReviews() time = $t1")
+
+            val t2 = measureTimeMillis {
+                val res = grapi.getAllReviewsConcurrent(userId.id)
+                println ("reviews # = ${res.size}")
+            }
+            println("getAllReviewsConcurrent() time = $t2")
 
 
         }
