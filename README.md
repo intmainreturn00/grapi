@@ -1,4 +1,7 @@
-#  GR_API
+#  good reads api
+
+Since Goodreads [retire](https://www.goodreads.com/api) their api, this project should be considered deprecated as well.
+
 
 ![](README/goodreads-login-button-7bd184d3077cf3580f68aa8a00de39ce.png)
 
