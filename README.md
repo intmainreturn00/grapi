@@ -1,7 +1,8 @@
 #  good reads api
 
-Since Goodreads [retire](https://www.goodreads.com/api) their api, this project should be considered deprecated as well.
+> Since Goodreads [retire](https://www.goodreads.com/api) their api, this project should be considered deprecated as well. 🛑
 
+---
 
 ![](README/goodreads-login-button-7bd184d3077cf3580f68aa8a00de39ce.png)
 
@@ -18,17 +19,13 @@ SDK handles login via OAuth with access token storage management and allow you t
 Currently supported api methods: 
 
 [![](https://img.shields.io/badge/-getUserId-blue.svg)]() [![](https://img.shields.io/badge/-getUser-blue.svg)]() [![](https://img.shields.io/badge/-getUserShelves-blue.svg)]() [![](https://img.shields.io/badge/-getReviewList-blue.svg)]() 
-[![](https://img.shields.io/badge/-getBookByISBN-blue.svg)]() [![](https://img.shields.io/badge/-getBookByGRID-blue.svg)]() [![](https://img.shields.io/badge/-getSearchResults-blue.svg)]() 
-
-[![](https://img.shields.io/badge/-getAllReviews-blue.svg)]()
+[![](https://img.shields.io/badge/-getBookByISBN-blue.svg)]() [![](https://img.shields.io/badge/-getBookByGRID-blue.svg)]() [![](https://img.shields.io/badge/-getSearchResults-blue.svg)]() [![](https://img.shields.io/badge/-getAllReviews-blue.svg)]()
 [![](https://img.shields.io/badge/-getAllReviewsConcurrent-blue.svg)]()
 [![](https://img.shields.io/badge/-getAllShelves-blue.svg)]()
 
 I’m currently adding the rest of the methods, so if you have feature requests or pull requests or just a comments - open an issue and I will try to help you. RFC.
 
-You can find implementation details at my [Medium Post](https://medium.com/@intmainreturn00/goodreads-api-from-android-with-kotlin-fd8c2c7338d8) <img src="https://github.com/Medium/medium-logos/blob/master/monogram/Monogram.png" width="20">
-
-If you’d like the work, star this repo ⭐️ or you can [buy me a cup of coffee](http://ko-fi.com/intmainreturn00) ☕️
+Implementation details [Medium Post](https://medium.com/@intmainreturn00/goodreads-api-from-android-with-kotlin-fd8c2c7338d8)
 
 ## Setup
 1. Make sure you have the jitpack repo in your project level `build.gradle` :
@@ -50,13 +47,13 @@ implementation 'com.github.intmainreturn00:grapi:1.4'
 
 3. Register your app at [Goodreads](https://www.goodreads.com/api/keys)
 <p align="center">
-<img src="README/612866BB-D892-4294-9668-8E8EC844C548.png" width="600">
+<img src="README/612866BB-D892-4294-9668-8E8EC844C548.png" width="300">
 </p>
 
 I recommend storing api key and secret at global `gradle.properties` file - this way you don’t risk accidentally post it to git and its a common practice. This file usually can be found at your user home directory. [[about global properties](https://medium.com/code-better/hiding-api-keys-from-your-android-repository-b23f5598b906)]. This is the way I do it at sample app. (don’t mess it with local `gradle.properties`, which can be added to git)
 
 <p align="center">
-<img src="README/B4376172-F622-4DE4-8329-2E239726D396.png" width="500">
+<img src="README/B4376172-F622-4DE4-8329-2E239726D396.png" width="300">
 </p>
 
 4. OAuth authorisation requires redirect, so you need to add this intent filter with your callback url, given from goodreads registration. (_change host and scheme to your names - at sample app I used manifestPlaceholders for it_)
@@ -138,3 +135,7 @@ launch {
 ```
 
 As you can see at sample app, I’m launching coroutines from ScoupedActivity context. Beware not to use requests methods from main thread.
+
+---
+
+[coffee](http://ko-fi.com/intmainreturn00) ☕️
